@@ -20,6 +20,9 @@ module.exports = {
     }, {
       test: /\.scss$/,
       loader: 'style-loader!css-loader!postcss-loader!sass-loader'
+    }, {
+      test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+      loader: 'url-loader?limit=100000'
     }]
   },
   postcss: function () {

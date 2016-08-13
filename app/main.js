@@ -1,18 +1,40 @@
+import { createDevTools } from 'redux-devtools';
+import LogMonitor from 'redux-devtools-log-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor';
+
 import React from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import reducer from './reducers';
-import App from './containers/App';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
-const store = createStore(reducer, window.devToolsExtension && window.devToolsExtension());
+import * as reducers from './reducers';
+import { App, Home, GamesList, GameCreation, GameItem } from './components';
 
-// import style
-require('./assets/styles/app.scss');
+const DevTools = createDevTools(
+  <DockMonitor toggleVisibilityKey='ctrl-h' changePositionKey='ctrl-q'>
+    <LogMonitor theme='tomorrow' preserveScrollTop={false} />
+  </DockMonitor>
+);
 
-render(
+const reducer = combineReducers({...reducers, routing: routerReducer});
+const store = createStore(reducer, DevTools.instrument());
+const history = syncHistoryWithStore(browserHistory, store);
+
+ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <div>
+      <Router history={history}>
+        <Route path='/' component={App}>
+          <IndexRoute component={Home} />
+          <Route path='games' component={GamesList} />
+          <Route path='game' component={GameCreation} />
+          <Route path='game/:id' component={GameItem} />
+        </Route>
+      </Router>
+      <DevTools />
+    </div>
   </Provider>,
   document.getElementById('container')
 );
