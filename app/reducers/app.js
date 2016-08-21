@@ -4,7 +4,11 @@ import { CREATE_GAME, JOIN_GAME, UPDATE_CURRENT_GAME, UPDATE_GAMES_LIST } from '
 
 const initialState = new Map({
   socket: io.connect('localhost:3000'),
-  game: {},
+  game: {
+    map: {
+      regions: []
+    }
+  },
   games: []
 });
 

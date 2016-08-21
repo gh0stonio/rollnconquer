@@ -1,7 +1,14 @@
 import express from 'express';
 import socketio from 'socket.io';
+import mapGenerator from 'map-gen';
 
 let games = [];
+const playerColors = {
+  1: 'red',
+  2: 'green',
+  3: 'orange',
+  4: 'blue'
+};
 
 // Express
 const app = express();
@@ -20,12 +27,32 @@ io.on('connection', (socket) => {
   let player = {};
 
   socket.on('create_game', (config) => {
-    console.log('create_game', config);
+    const mapConfig = {
+      width: 10,
+      height: 10,
+      hexagonSize: 15,
+      useDistortion: false,
+      useCompactShapes: false
+    };
     const game = {
       name: config.name,
       totalPlayers: 1,
       maxPlayers: 5
     };
+
+    const generateRegionColor = () => {
+      function getRandomIntInclusive (min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      return playerColors[getRandomIntInclusive(1, 4)];
+    };
+
+    game.map = mapGenerator.generateMap(mapConfig);
+    game.map.regions = game.map.regions.map((region) => {
+      region.color = generateRegionColor();
+      return region;
+    });
 
     games.push(game);
     player.currentGame = game;
@@ -33,7 +60,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('join_game', (gameName) => {
-    console.log('join_game', gameName);
     let game = games.find((game) => {
       return game.name === gameName;
     });
@@ -44,12 +70,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('get_current_game', () => {
-    console.log('get_current_game', player.currentGame);
     socket.emit('current_game', player.currentGame);
   });
 
   socket.on('get_games_list', () => {
-    console.log('get_current_game', games);
     socket.emit('games_list', games);
   });
 });

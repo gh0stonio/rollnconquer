@@ -11,13 +11,13 @@ class PlayContainer extends Component {
         return browserHistory.push('/');
       }
 
-      this.props.dispatch(updateCurrentGame(game));
+      this.props.updateCurrentGame(game);
     }.bind(this));
     this.props.socket.emit('get_current_game');
   }
   render () {
-    const { game } = this.props;
-    return <GamePlay game={game} />;
+    const { game, onRegionClick } = this.props;
+    return <GamePlay game={game} onRegionClick={onRegionClick} />;
   }
 }
 
@@ -28,4 +28,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PlayContainer);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCurrentGame: (game) => dispatch(updateCurrentGame(game)),
+    onRegionClick: (regionId) => {
+      document.querySelector('#region_' + regionId).style.fill = 'black';
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlayContainer);
