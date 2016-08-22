@@ -4,8 +4,8 @@
   "description": "Roll the dice and conquer the world !",
   "scripts": {
     "start": "webpack-dev-server --inline --hot --progress  --no-info --history-api-fallback --port 9000",
-    "server": "babel-node server.js",
-    "server-debug": "babel-node-debug server.js"
+    "server": "babel-node server/server.js",
+    "server-debug": "babel-node-debug server/server.js"
   },
   "babel": {
     "presets": [

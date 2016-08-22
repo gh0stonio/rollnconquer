@@ -6,7 +6,9 @@ const initialState = new Map({
   socket: io.connect('localhost:3000'),
   game: {
     map: {
-      regions: []
+      board: {
+        regions: []
+      }
     }
   },
   games: []
