@@ -1,4 +1,4 @@
-import Map from './Map';
+import Board from './Board';
 
 export default class Game {
   constructor ({ name }) {
@@ -6,7 +6,7 @@ export default class Game {
     this.totalPlayers = 1;
     this.maxPlayers = 5;
 
-    this.map = new Map({});
+    this.board = new Board({});
   }
   addNewPlayer () {
     this.totalPlayers++;
