@@ -15,6 +15,12 @@ import { RouterLink, RouterView } from 'vue-router';
           >Home</RouterLink
         >
         <RouterLink
+          to="/game"
+          class="inline-block py-0 px-4 text-gray-900 hover:text-gray-900"
+          active-class="text-green-600 hover:text-green-500"
+          >Game</RouterLink
+        >
+        <RouterLink
           to="/about"
           class="inline-block py-0 px-4 text-gray-900 hover:text-gray-900"
           active-class="text-green-600 hover:text-green-500"
