@@ -1,12 +1,21 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import type { Tile } from '@/types';
   import { TILE_RADIUS, TILE_STROKE_WIDTH, TILE_WIDTH } from '@/constants';
 
-  defineProps<{
+  const props = defineProps<{
     tile: Tile;
+    isHovered: boolean;
     isSelected: boolean;
+    isTargetable: boolean;
     onClick: (tile: Tile) => void;
+    onMouseHover: (tile?: Tile) => void;
   }>();
+
+  const color = computed(() => {
+    const baseColor = props.isSelected ? '#FF0000' : props.isTargetable ? '#FFFF00' : '#93989D';
+    return props.isHovered ? `${baseColor}BB` : baseColor;
+  });
 </script>
 
 <template>
@@ -14,12 +23,13 @@
     :config="{
       radius: TILE_RADIUS,
       sides: 6,
-      fill: isSelected ? 'red' : '#93989D',
+      fill: color,
       stroke: 'black',
       strokeWidth: TILE_STROKE_WIDTH,
       ...tile
     }"
     @click="onClick(tile)"
+    @mouseover="onMouseHover(tile)"
   />
   <konva-text
     :config="{

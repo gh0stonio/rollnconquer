@@ -38,8 +38,11 @@
   };
 
   let tiles = generateTilesGrid();
+
   const selectedTile = ref<Tile>();
+  const hoveredTile = ref<Tile>();
   const onTileClick = (tile: Tile) => (selectedTile.value = tile);
+  const onMouseHover = (tile?: Tile) => (hoveredTile.value = tile);
 </script>
 
 <template>
@@ -53,7 +56,10 @@
             :key="key"
             :tile="tile"
             :on-click="onTileClick"
+            :on-mouse-hover="onMouseHover"
+            :is-targetable="false"
             :is-selected="tile.col === selectedTile?.col && tile.row === selectedTile?.row"
+            :is-hovered="tile.col === hoveredTile?.col && tile.row === hoveredTile?.row"
           />
         </konva-layer>
       </konva-stage>
