@@ -39,5 +39,6 @@
       y: tile.y && tile.y - TILE_RADIUS / 4
     }"
     @click="onClick(tile)"
+    @mouseover="onMouseHover(tile)"
   />
 </template>
